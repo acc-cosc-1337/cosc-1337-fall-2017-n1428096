@@ -1,0 +1,77 @@
+#include "stdafx.h"
+#include "Payroll.h"
+#include <iostream>
+#include <iostream>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+
+
+
+
+int main(int argc, char *argv[])
+{
+	char category;
+	string  name;
+	float   totalHours, regularHours = 0, otHours = 0, regularRate = 0, otRate = 0, regularPay, otPay = 0, grossPay,
+		fit, ficaSSN, ficaMed, netPay;
+
+	cout << "Enter employee name: ";
+	getline(cin, name);
+	cout << "Enter h for hourly and s for salary: ";
+	cin >> category;
+
+	switch (int(category))
+	{
+	case(hourly) :
+
+		cout << "Enter hours worked: ";
+		cin >> totalHours;
+		cout << "Enter hourly rate: ";
+		cin >> regularRate;
+
+		if (totalHours > STANDARD_HOURS)
+		{
+			otRate = regularRate * OT_MULTIPLIER;
+			otHours = totalHours - STANDARD_HOURS;
+			otPay = otRate * otHours;
+			regularHours = STANDARD_HOURS;
+		}
+		else
+			regularHours = totalHours;
+
+		regularPay = regularRate * regularHours;
+		break;
+	case(salary) :
+
+		float salary;
+		cout << "Enter yearly salary: ";
+		cin >> salary;
+
+		regularPay = salary / PAY_FREQUENCY;
+
+		break;
+	default:
+		cout << "Invalid entry...";
+		return 1;
+	}
+
+	grossPay = gross_pay(regularPay, otPay);
+
+	fit = grossPay * FIT_RATE;
+	ficaSSN = grossPay * FICA_SSN_RATE;
+	ficaMed = fica_med(grossPay);
+	netPay = grossPay - fit - ficaSSN - ficaMed;
+
+	printHeader();
+
+
+	cout << fixed << showpoint << setprecision(2);
+
+	printemployee(name, regularHours, otHours, regularRate, otRate, regularPay,
+		otPay, grossPay, fit, ficaSSN, ficaMed, netPay);
+
+
+	return 0;
+}
