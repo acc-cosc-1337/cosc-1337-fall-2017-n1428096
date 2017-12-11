@@ -1,0 +1,30 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+
+const double HOMESTEAD_RATE = .035;
+const double HOMESTEAD_DISCOUNT = .2;
+
+
+
+int main()
+{
+	double propertyValue, homesteadDiscount, taxablePropertyValue, propertyTax;
+
+	cout << "Enter property value: ";
+	cin >> propertyValue;
+
+	homesteadDiscount = propertyValue * HOMESTEAD_DISCOUNT;
+	taxablePropertyValue = propertyValue - homesteadDiscount;
+	propertyTax = taxablePropertyValue * HOMESTEAD_RATE;
+
+	cout << fixed << showpoint << setprecision(2);
+	cout << left << setw(24) << "Property Value: " << right << setw(9) << propertyValue << endl;
+	cout << left << setw(24) << "Homestead Discount: " << right << setw(9) << homesteadDiscount << endl;;
+	cout << left << setw(24) << "Taxable Property Value: " << right << setw(9) << taxablePropertyValue << endl;;
+	cout << left << setw(24) << "Property Tax: " << setw(9) << right << propertyTax;
+
+	return 0;
+}
