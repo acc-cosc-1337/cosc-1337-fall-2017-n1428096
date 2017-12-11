@@ -1,0 +1,92 @@
+#include "stdafx.h"
+#include <iostream>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+
+enum employeeCategory { hourly = 104, salary = 115 };
+const double FIT_RATE = .15;
+const double FICA_SSN_RATE = .062;
+const double FICA_MED_RATE = .0145;
+const float  OT_MULTIPLIER = 1.5;
+const float  STANDARD_HOURS = 40;
+const float  PAY_FREQUENCY = 26;
+
+
+int main(int argc, char *argv[])
+{
+	char category;
+	string  name;
+	float   totalHours, regularHours = 0, otHours = 0, regularRate = 0, otRate = 0, regularPay, otPay = 0, grossPay,
+		fit, ficaSSN, ficaMed, netPay;
+
+	cout << "Enter employee name: ";
+	getline(cin, name);
+	cout << "Enter h for hourly and s for salary: ";
+	cin >> category;
+
+	switch (int(category))
+	{
+	case(hourly) :
+
+		cout << "Enter hours worked: ";
+		cin >> totalHours;
+		cout << "Enter hourly rate: ";
+		cin >> regularRate;
+
+		if (totalHours > STANDARD_HOURS)
+		{
+			otRate = regularRate * OT_MULTIPLIER;
+			otHours = totalHours - STANDARD_HOURS;
+			otPay = otRate * otHours;
+			regularHours = STANDARD_HOURS;
+		}
+		else
+			regularHours = totalHours;
+
+		regularPay = regularRate * regularHours;
+		break;
+	case(salary) :
+
+		float salary;
+		cout << "Enter yearly salary: ";
+		cin >> salary;
+
+		regularPay = salary / PAY_FREQUENCY;
+
+		break;
+	default:
+		cout << "Invalid entry...";
+		return 1;
+	}
+
+	grossPay = regularPay + otPay;
+	fit = grossPay * FIT_RATE;
+	ficaSSN = grossPay * FICA_SSN_RATE;
+	ficaMed = grossPay * FICA_MED_RATE;
+	netPay = grossPay - fit - ficaSSN - ficaMed;
+
+	cout << left << setw(15) << "Name" << " Hours " << " OT Hours " << "  Rate  " << " OT Rate " << " Regular Pay " << " OT Pay " << " Gross Pay "
+		<< "Fed Tax " << " FICA SSN " << " FICA Med " << " Net Pay " << endl;
+	cout << fixed << showpoint << setprecision(2);
+	cout << left << setw(15) << name;
+
+	regularHours > 0 ? cout << right << setw(6) << regularHours : cout << setw(6) << " ";
+	otHours > 0 ? cout << right << setw(10) << otHours : cout << setw(10) << " ";
+	regularRate > 0 ? cout << right << setw(8) << regularRate : cout << setw(8) << " ";
+	otRate > 0 ? cout << right << setw(9) << otRate : cout << setw(9) << " ";
+
+	cout << right << setw(13) << regularPay;
+
+	otPay > 0 ? cout << right << setw(8) << otPay : cout << setw(8) << " ";
+
+	cout << right << setw(10) << grossPay
+		<< right << setw(9) << fit
+		<< right << setw(11) << ficaSSN
+		<< right << setw(10) << ficaMed
+		<< right << setw(9) << netPay;
+
+	return 0;
+}
+
